@@ -65,7 +65,7 @@ if __name__ == '__main__':
         sys.stderr.write("Could not connect to server, or password mismatch!\n")
         sys.exit(1)
 
-    #cl.SendInitPresence(requestRoster=0)   # you may need to uncomment this for old server
+    cl.sendInitPresence(requestRoster=0)   # you may need to uncomment this for old server
     
     socketlist = {cl.Connection._sock:'xmpp',sys.stdin:'stdio'}
     online = 1
