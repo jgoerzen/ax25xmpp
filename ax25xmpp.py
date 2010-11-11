@@ -23,6 +23,8 @@
 
 import sys,os,xmpp,time,select,fcntl
 
+EOL = "\r"
+
 class Bot:
 
     def __init__(self,jabber,remotejid,presence):
@@ -40,14 +42,14 @@ class Bot:
         fromjid = event.getFrom().getStripped()
         if type in ['message', 'chat', None] and fromjid == self.remotejid:
             if event.getBody() == '!EX':
-                sys.stdout.write("Connection closed.\r")
+                sys.stdout.write("Connection closed." + EOL)
                 sys.stdout.flush()
                 sys.exit(0)
             if not self.hasresponded:
-                sys.stdout.write("Sysop has responded.\r")
+                sys.stdout.write("Sysop has responded." + EOL)
                 sys.stdout.flush()
                 self.hasresponded = True
-            sys.stdout.write(event.getBody() + '\r')
+            sys.stdout.write(event.getBody() + EOL)
             sys.stdout.flush()
 
     def stdio_message(self, message):
@@ -58,15 +60,15 @@ class Bot:
     def xmpp_connect(self):
         con=self.jabber.connect()
         if not con:
-            sys.stderr.write('could not connect!\r')
+            sys.stderr.write('could not connect!' + EOL)
             sys.stdout.flush()
             return False
-        sys.stdout.write("Paging sysop.\r")
+        sys.stdout.write("Paging sysop." + EOL)
         sys.stdout.flush()
         #sys.stderr.write('connected with %s\n'%con)
         auth=self.jabber.auth(jid.getNode(),jidparams['password'],resource=jid.getResource())
         if not auth:
-            sys.stderr.write('could not authenticate!\n')
+            sys.stderr.write('could not authenticate!' + EOL)
             sys.stdout.flush()
             return False
         #sys.stderr.write('authenticated using %s\n'%auth)
@@ -92,14 +94,16 @@ class Bot:
 
 if __name__ == '__main__':
 
+    if sys.stdin.isatty():
+        EOL = "\n"
     if len(sys.argv) < 5:
         print "Syntax: xtalk configfile JID port callwithssid nodenamewithssid"
         sys.stdout.flush()
         sys.exit(0)
 
-    sys.stdout.write("ax25xmpp bridge (c) 2010 John Goerzen, 2003-2008 Alexey Nezhdanov\r")
+    sys.stdout.write("ax25xmpp bridge (c) 2010 John Goerzen, 2003-2008 Alexey Nezhdanov" + EOL)
     sys.stdout.flush()
-    sys.stdout.write("bridge ready.\r")
+    sys.stdout.write("bridge ready." + EOL)
     sys.stdout.flush()
     
     configfile=sys.argv[1]
@@ -131,7 +135,7 @@ if __name__ == '__main__':
     bot=Bot(cl,tojid,presence)
 
     if not bot.xmpp_connect():
-        sys.stderr.write("Could not connect to server, or password mismatch!\r")
+        sys.stderr.write("Could not connect to server, or password mismatch!" + EOL)
         sys.stdout.flush()
         sys.exit(1)
 
@@ -161,7 +165,7 @@ if __name__ == '__main__':
                 readbuf += msg
 
                 # Process the buffer.
-                splitted = readbuf.split("\r")
+                splitted = readbuf.split(EOL)
                 if len(splitted) > 1:
                     # we have 1 or more items to output
                     for item in splitted[:-1]:
