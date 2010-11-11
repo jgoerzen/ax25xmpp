@@ -19,12 +19,12 @@ class Bot:
         fromjid = event.getFrom().getStripped()
         if type in ['message', 'chat', None] and fromjid == self.remotejid:
             if event.getBody() == '!EX':
-                sys.stdout.write("Connection closed.\n")
+                sys.stdout.write("Connection closed.\r\n")
                 sys.exit(0)
             if not self.hasresponded:
-                sys.stdout.write("Sysop has responded.\n")
+                sys.stdout.write("Sysop has responded.\r\n")
                 self.hasresponded = True
-            sys.stdout.write(event.getBody() + '\n')
+            sys.stdout.write(event.getBody() + '\r\n')
 
     def stdio_message(self, message):
         m = xmpp.protocol.Message(to=self.remotejid,body=message,typ='chat')
@@ -34,9 +34,9 @@ class Bot:
     def xmpp_connect(self):
         con=self.jabber.connect()
         if not con:
-            sys.stderr.write('could not connect!\n')
+            sys.stderr.write('could not connect!\r\n')
             return False
-        sys.stdout.write("Paging sysop.\n")
+        sys.stdout.write("Paging sysop.\r\n")
         #sys.stderr.write('connected with %s\n'%con)
         auth=self.jabber.auth(jid.getNode(),jidparams['password'],resource=jid.getResource())
         if not auth:
@@ -69,7 +69,7 @@ if __name__ == '__main__':
         print "Syntax: xtalk JID port callwithssid nodenamewithssid"
         sys.exit(0)
 
-    sys.stdout.write("ax25xmpp bridge ready.\n")
+    sys.stdout.write("ax25xmpp bridge ready.\r\n")
     
     tojid=sys.argv[1]
     incomingport=sys.argv[2]
