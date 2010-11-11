@@ -97,7 +97,7 @@ if __name__ == '__main__':
     if sys.stdin.isatty():
         EOL = "\n"
     if len(sys.argv) < 6:
-        print "Syntax: xtalk configfile JID port callwithssid nodenamewithssid [UNIXEOL]"
+        print "Syntax: ax25xmpp configfile JID port callwithssid nodenamewithssid [UNIXEOL]"
         sys.stdout.flush()
         sys.exit(0)
 
