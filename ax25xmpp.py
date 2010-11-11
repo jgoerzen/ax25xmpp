@@ -40,12 +40,12 @@ class Bot:
         fromjid = event.getFrom().getStripped()
         if type in ['message', 'chat', None] and fromjid == self.remotejid:
             if event.getBody() == '!EX':
-                sys.stdout.write("Connection closed.\r\n")
+                sys.stdout.write("Connection closed.\r")
                 sys.exit(0)
             if not self.hasresponded:
-                sys.stdout.write("Sysop has responded.\r\n")
+                sys.stdout.write("Sysop has responded.\r")
                 self.hasresponded = True
-            sys.stdout.write(event.getBody() + '\r\n')
+            sys.stdout.write(event.getBody() + '\r')
 
     def stdio_message(self, message):
         m = xmpp.protocol.Message(to=self.remotejid,body=message,typ='chat')
@@ -55,9 +55,9 @@ class Bot:
     def xmpp_connect(self):
         con=self.jabber.connect()
         if not con:
-            sys.stderr.write('could not connect!\r\n')
+            sys.stderr.write('could not connect!\r')
             return False
-        sys.stdout.write("Paging sysop.\r\n")
+        sys.stdout.write("Paging sysop.\r")
         #sys.stderr.write('connected with %s\n'%con)
         auth=self.jabber.auth(jid.getNode(),jidparams['password'],resource=jid.getResource())
         if not auth:
@@ -90,8 +90,8 @@ if __name__ == '__main__':
         print "Syntax: xtalk configfile JID port callwithssid nodenamewithssid"
         sys.exit(0)
 
-    sys.stdout.write("ax25xmpp bridge (c) 2010 John Goerzen, 2003-2008 Alexey Nezhdanov\r\n")
-    sys.stdout.write("bridge ready.\r\n")
+    sys.stdout.write("ax25xmpp bridge (c) 2010 John Goerzen, 2003-2008 Alexey Nezhdanov\r")
+    sys.stdout.write("bridge ready.\r")
     
     configfile=sys.argv[1]
     tojid=sys.argv[2]
@@ -121,7 +121,7 @@ if __name__ == '__main__':
     bot=Bot(cl,tojid,presence)
 
     if not bot.xmpp_connect():
-        sys.stderr.write("Could not connect to server, or password mismatch!\r\n")
+        sys.stderr.write("Could not connect to server, or password mismatch!\r")
         sys.exit(1)
 
     cl.sendInitPresence(requestRoster=1)   # you may need to uncomment this for old server
