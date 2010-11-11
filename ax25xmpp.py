@@ -42,7 +42,7 @@ class Bot:
         fromjid = event.getFrom().getStripped()
         if type in ['message', 'chat', None] and fromjid == self.remotejid:
             if event.getBody() == '!EX':
-                sys.stdout.write("Connection closed." + EOL)
+                sys.stdout.write("Connection closed by sysop." + EOL)
                 sys.stdout.flush()
                 sys.exit(0)
             if not self.hasresponded:
@@ -96,14 +96,14 @@ if __name__ == '__main__':
 
     if sys.stdin.isatty():
         EOL = "\n"
-    if len(sys.argv) < 5:
-        print "Syntax: xtalk configfile JID port callwithssid nodenamewithssid"
+    if len(sys.argv) < 6:
+        print "Syntax: xtalk configfile JID port callwithssid nodenamewithssid [UNIXEOL]"
         sys.stdout.flush()
         sys.exit(0)
 
     sys.stdout.write("ax25xmpp bridge (c) 2010 John Goerzen, 2003-2008 Alexey Nezhdanov" + EOL)
     sys.stdout.flush()
-    sys.stdout.write("bridge ready." + EOL)
+    sys.stdout.write("Bridge ready.  Type !EX to close session." + EOL)
     sys.stdout.flush()
     
     configfile=sys.argv[1]
@@ -111,6 +111,8 @@ if __name__ == '__main__':
     incomingport=sys.argv[3]
     incomingcall=sys.argv[4]
     incomingnodename=sys.argv[5]
+    if len(sys.argv) == 7 and sys.argv[6] == 'UNIXEOL':
+        EOL = "\n"
 
     greeting1 = 'Chat request on port %s from call %s on node %s.  Type !EX to close session.' \
         % (incomingport, incomingcall, incomingnodename)
@@ -169,6 +171,11 @@ if __name__ == '__main__':
                 if len(splitted) > 1:
                     # we have 1 or more items to output
                     for item in splitted[:-1]:
+                        if item == '!EX':
+                            bot.stdio_message("Connection closed via !EX command from user")
+                            sys.stdout.write("Connection closed at your request." + EOL)
+                            sys.stdout.flush()
+                            sys.exit(0)
                         bot.stdio_message(item)
                     # Put remainder back into buffer
                     readbuf = splitted[-1]
