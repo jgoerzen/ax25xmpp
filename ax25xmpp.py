@@ -1,5 +1,26 @@
 #!/usr/bin/python -W ignore::DeprecationWarning
-# $Id: xtalk.py,v 1.2 2006/10/06 12:30:42 normanr Exp $
+
+#
+# Copyright (c) 2010 John Goerzen
+#
+# Based on xtalk.py from xmppy, Copyright 2003-2008 Alexey Nezhdanov
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2, or (at your option)
+#   any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this package; if not, write to the Free Software
+#   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+#   02110-1301, USA.
+
+
 import sys,os,xmpp,time,select
 
 class Bot:
@@ -69,7 +90,8 @@ if __name__ == '__main__':
         print "Syntax: xtalk JID port callwithssid nodenamewithssid"
         sys.exit(0)
 
-    sys.stdout.write("ax25xmpp bridge ready.\r\n")
+    sys.stdout.write("ax25xmpp bridge (c) 2010 John Goerzen, 2003-2008 Alexey Nezhdanov\r\n")
+    sys.stdout.write("bridge ready.\r\n")
     
     tojid=sys.argv[1]
     incomingport=sys.argv[2]
