@@ -21,7 +21,7 @@
 #   02110-1301, USA.
 
 
-import sys,os,xmpp,time,select
+import sys,os,xmpp,time,select,fcntl
 
 class Bot:
 
@@ -132,14 +132,30 @@ if __name__ == '__main__':
     socketlist = {cl.Connection._sock:'xmpp',sys.stdin:'stdio'}
     online = 1
 
+    # Set to non-blocking
+
+    fd = sys.stdin.fileno()
+    fl = fcntl.fcntl(fd, fcntl.F_GETFL)
+    fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+    readbuf = ""
+
+
     while online:
         (i , o, e) = select.select(socketlist.keys(),[],[],1)
         for each in i:
             if socketlist[each] == 'xmpp':
                 cl.Process(1)
             elif socketlist[each] == 'stdio':
-                msg = sys.stdin.readline().rstrip('\r\n')
-                bot.stdio_message(msg)
+                msg = sys.stdin.read(4096)
+                readbuf += msg
+
+                # Process the buffer.
+                splitted = readbuf.split("\r")
+                if len(splitted) > 1:
+                    # we have 1 or more items to output
+                    for item in splitted[:-1]:
+                        bot.stdio_message(item)
+                    readbuf = items[-1]
             else:
                 raise Exception("Unknown socket type: %s" % repr(socketlist[each]))
     #cl.disconnect()
