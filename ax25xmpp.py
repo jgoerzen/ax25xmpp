@@ -170,7 +170,8 @@ if __name__ == '__main__':
                     # we have 1 or more items to output
                     for item in splitted[:-1]:
                         bot.stdio_message(item)
-                    readbuf = item[-1]
+                    # Put remainder back into buffer
+                    readbuf = splitted[-1]
             else:
                 raise Exception("Unknown socket type: %s" % repr(socketlist[each]))
     #cl.disconnect()
