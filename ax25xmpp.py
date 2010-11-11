@@ -87,32 +87,33 @@ class Bot:
 if __name__ == '__main__':
 
     if len(sys.argv) < 5:
-        print "Syntax: xtalk JID port callwithssid nodenamewithssid"
+        print "Syntax: xtalk configfile JID port callwithssid nodenamewithssid"
         sys.exit(0)
 
     sys.stdout.write("ax25xmpp bridge (c) 2010 John Goerzen, 2003-2008 Alexey Nezhdanov\r\n")
     sys.stdout.write("bridge ready.\r\n")
     
-    tojid=sys.argv[1]
-    incomingport=sys.argv[2]
-    incomingcall=sys.argv[3]
-    incomingnodename=sys.argv[4]
+    configfile=sys.argv[1]
+    tojid=sys.argv[2]
+    incomingport=sys.argv[3]
+    incomingcall=sys.argv[4]
+    incomingnodename=sys.argv[5]
 
     greeting1 = 'Chat request on port %s from call %s on node %s.  Type !EX to close session.' \
         % (incomingport, incomingcall, incomingnodename)
     presence = 'Bridged to port %s, call %s' % (incomingport, incomingcall)
     
     jidparams={}
-    if os.access(os.environ['HOME']+'/.xtalk',os.R_OK):
-        for ln in open(os.environ['HOME']+'/.xtalk').readlines():
+    if os.access(configfile,os.R_OK):
+        for ln in open(configfile).readlines():
             if not ln[0] in ('#',';'):
                 key,val=ln.strip().split('=',1)
                 jidparams[key.lower()]=val
     for mandatory in ['jid','password']:
         if mandatory not in jidparams.keys():
-            open(os.environ['HOME']+'/.xtalk','w').write('#Uncomment fields before use and type in correct credentials.\n#JID=romeo@montague.net/resource (/resource is optional)\n#PASSWORD=juliet\n')
-            print 'Please point ~/.xtalk config file to valid JID for sending messages.'
-            sys.exit(0)
+            open(configfile,'w').write('#Uncomment fields before use and type in correct credentials.\n#JID=romeo@montague.net/resource (/resource is optional)\n#PASSWORD=juliet\n')
+            print 'Please point %s config file to valid JID for sending messages.' % configfile
+            sys.exit(5)
     
     jid=xmpp.protocol.JID(jidparams['jid'])
     cl=xmpp.Client(jid.getDomain(),debug=[])
@@ -120,7 +121,7 @@ if __name__ == '__main__':
     bot=Bot(cl,tojid,presence)
 
     if not bot.xmpp_connect():
-        sys.stderr.write("Could not connect to server, or password mismatch!\n")
+        sys.stderr.write("Could not connect to server, or password mismatch!\r\n")
         sys.exit(1)
 
     cl.sendInitPresence(requestRoster=1)   # you may need to uncomment this for old server
