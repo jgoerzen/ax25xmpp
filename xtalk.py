@@ -10,6 +10,7 @@ class Bot:
 
     def register_handlers(self):
         self.jabber.RegisterHandler('message',self.xmpp_message)
+        self.jabber.RegisterHandler('presence',self.xmpp_presence)
 
     def xmpp_message(self, con, event):
         type = event.getType()
@@ -35,6 +36,19 @@ class Bot:
         sys.stderr.write('authenticated using %s\n'%auth)
         self.register_handlers()
         return con
+
+    def xmpp_presence(self, conn, presence_node):
+        if presence_node.getFrom().bareMatch(self.remotejid):
+            if presence_node.getType() == 'subscribe':
+                replypres=xmpp.Presence(typ='subscribed',to=presence_node.getFrom())
+                conn.send(replypres)
+            elif presence_node.getType() == 'probe':
+                replypres = xmpp.Presence(to=presence_node.getFrom(),
+                                          show='chat', status='Chatting with xtalk')
+                conn.send(replypres)
+            elif ((not presence_node.getShow() is None) and  \
+                  presence_node.getShow != '') :
+                sys.stdout.write("*** Status: " + presence_node.getShow() + "\n")
 
 if __name__ == '__main__':
 
@@ -66,6 +80,9 @@ if __name__ == '__main__':
         sys.exit(1)
 
     cl.sendInitPresence(requestRoster=0)   # you may need to uncomment this for old server
+    pres = xmpp.Presence(show='chat', status='Chatting with xtalk')
+    cl.send(pres)
+    
     
     socketlist = {cl.Connection._sock:'xmpp',sys.stdin:'stdio'}
     online = 1
