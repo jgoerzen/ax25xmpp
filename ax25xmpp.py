@@ -49,7 +49,7 @@ class Bot:
                 sys.stdout.write("Sysop has responded." + EOL)
                 sys.stdout.flush()
                 self.hasresponded = True
-            sys.stdout.write(event.getBody() + EOL)
+            sys.stdout.write(">>> " + event.getBody() + " <<<" + EOL)
             sys.stdout.flush()
 
     def stdio_message(self, message):
@@ -101,11 +101,6 @@ if __name__ == '__main__':
         sys.stdout.flush()
         sys.exit(0)
 
-    sys.stdout.write("ax25xmpp bridge (c) 2010 John Goerzen, 2003-2008 Alexey Nezhdanov" + EOL)
-    sys.stdout.flush()
-    sys.stdout.write("Bridge ready.  Type !EX to close session." + EOL)
-    sys.stdout.flush()
-    
     configfile=sys.argv[1]
     tojid=sys.argv[2]
     incomingport=sys.argv[3]
@@ -114,6 +109,11 @@ if __name__ == '__main__':
     if len(sys.argv) == 7 and sys.argv[6] == 'UNIXEOL':
         EOL = "\n"
 
+    sys.stdout.write("ax25xmpp bridge (c) 2010 John Goerzen, 2003-2008 Alexey Nezhdanov" + EOL)
+    sys.stdout.flush()
+    sys.stdout.write("Bridge ready.  Type !EX to close session." + EOL)
+    sys.stdout.flush()
+    
     greeting1 = 'Chat request on port %s from call %s on node %s.  Type !EX to close session.' \
         % (incomingport, incomingcall, incomingnodename)
     presence = 'Bridged to port %s, call %s' % (incomingport, incomingcall)
