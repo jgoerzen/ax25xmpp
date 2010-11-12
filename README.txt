@@ -1,5 +1,19 @@
 Welcome to the AX.25 <-> XMPP (Jabber) gateway.
 
+Features
+--------
+
+ * Bidirectional chat bridge between AX.25 and Jabber.
+
+ * Integrates with Jabber presence system.  Sets its state description
+   to a dscription of the node that you're chatting with.  Indicates
+   it's offline when the remote end drops the link.
+
+ * Accepts details on the command line which are then passed to the
+   Jabber user at the beginning of the chat.
+
+ * Visually similar to ttylinkd for AX.25 users.
+
 Installation
 ------------
 
