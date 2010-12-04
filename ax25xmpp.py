@@ -49,8 +49,11 @@ class Bot:
                 #sys.stdout.write("Sysop has responded." + EOL)
                 #sys.stdout.flush()
                 self.hasresponded = True
-            sys.stdout.write(">>> " + event.getBody() + " <<<" + EOL)
-            sys.stdout.flush()
+            writebuf = ">>> " + event.getBody() + " <<<" + EOL
+            while writebuf != "":
+                sys.stdout.write(writebuf[0:60])
+                sys.stdout.flush()
+                writebuf = writebuf[60:]
 
     def stdio_message(self, message):
         m = xmpp.protocol.Message(to=self.remotejid,body=message,typ='chat')
