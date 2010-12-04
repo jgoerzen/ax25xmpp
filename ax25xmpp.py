@@ -46,8 +46,8 @@ class Bot:
                 sys.stdout.flush()
                 sys.exit(0)
             if not self.hasresponded:
-                sys.stdout.write("Sysop has responded." + EOL)
-                sys.stdout.flush()
+                #sys.stdout.write("Sysop has responded." + EOL)
+                #sys.stdout.flush()
                 self.hasresponded = True
             sys.stdout.write(">>> " + event.getBody() + " <<<" + EOL)
             sys.stdout.flush()
@@ -63,8 +63,8 @@ class Bot:
             sys.stderr.write('could not connect!' + EOL)
             sys.stdout.flush()
             return False
-        sys.stdout.write("Paging sysop." + EOL)
-        sys.stdout.flush()
+        #sys.stdout.write("Paging sysop." + EOL)
+        #sys.stdout.flush()
         #sys.stderr.write('connected with %s\n'%con)
         auth=self.jabber.auth(jid.getNode(),jidparams['password'],resource=jid.getResource())
         if not auth:
@@ -109,9 +109,9 @@ if __name__ == '__main__':
     if len(sys.argv) == 7 and sys.argv[6] == 'UNIXEOL':
         EOL = "\n"
 
-    sys.stdout.write("ax25xmpp bridge (c) 2010 John Goerzen, 2003-2008 Alexey Nezhdanov" + EOL)
-    sys.stdout.flush()
-    sys.stdout.write("Bridge ready.  Type !EX to close session." + EOL)
+    #sys.stdout.write("ax25xmpp bridge (c) 2010 John Goerzen, 2003-2008 Alexey Nezhdanov" + EOL)
+    #sys.stdout.flush()
+    sys.stdout.write("ax25xmpp bridge. Paging sysop. Type !EX to exit." + EOL)
     sys.stdout.flush()
     
     greeting1 = 'Chat request on port %s from call %s on node %s.  Type !EX to close session.' \
