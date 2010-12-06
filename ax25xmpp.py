@@ -104,6 +104,8 @@ if __name__ == '__main__':
         sys.stdout.flush()
         sys.exit(0)
 
+    logf = open("/tmp/ax25xmpp.log", "at")
+    os.dup2(logf.fileno(), 2)
     configfile=sys.argv[1]
     tojid=sys.argv[2]
     incomingport=sys.argv[3]
