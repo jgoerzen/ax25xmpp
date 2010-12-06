@@ -22,6 +22,7 @@
 
 
 import sys,os,xmpp,time,select,fcntl
+import xmpp.debug
 
 EOL = "\r"
 
@@ -135,9 +136,9 @@ if __name__ == '__main__':
             print 'Please point %s config file to valid JID for sending messages.' % configfile
             sys.stdout.flush()
             sys.exit(5)
-    
+
     jid=xmpp.protocol.JID(jidparams['jid'])
-    cl=xmpp.Client(jid.getDomain(),debug=[])
+    cl=xmpp.Client(jid.getDomain(),debug=["dispatcher"])
     
     bot=Bot(cl,tojid,presence)
 
