@@ -58,7 +58,8 @@ class Bot:
 
     def stdio_message(self, message):
         m = xmpp.protocol.Message(to=self.remotejid,body=message,typ='chat')
-        self.jabber.send(m)
+        # Filter out control characters to avoid not-well-formed errors
+        self.jabber.send(filter(lambda x: x >= ' ', m))
         pass
 
     def xmpp_connect(self):
