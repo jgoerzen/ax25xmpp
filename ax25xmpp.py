@@ -138,7 +138,7 @@ if __name__ == '__main__':
             sys.exit(5)
 
     jid=xmpp.protocol.JID(jidparams['jid'])
-    cl=xmpp.Client(jid.getDomain(),debug=["dispatcher"])
+    cl=xmpp.Client(jid.getDomain(),debug=['always', 'nodebuilder'])
     
     bot=Bot(cl,tojid,presence)
 
